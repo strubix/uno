@@ -10,5 +10,9 @@ module.exports = function(io, socket, rooms) {
 
   socket.on('get_rooms', () => {
     socket.emit('get_rooms', rooms);
-  })
+  });
+
+  socket.on('get_room_users', (room) => {
+    console.log(io.sockets.clients(room));
+  });
 };

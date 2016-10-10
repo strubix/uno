@@ -18,6 +18,8 @@ export default class SocketService {
   }
 
   init() {
+    this.socket.emit('get_room_users', 'toto');
+
     this.socket.on('connect', () => {
       this.User.setNick();
     });
