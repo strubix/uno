@@ -1,23 +1,39 @@
+import io from 'socket.io-client';
+
 export default class SocketService {
 
-  constructor() {
+  constructor(UserService, RoomsService, $rootScope) {
+    this.$rootScope = $rootScope;
+    this.host = 'http://localhost:5000';
+
+    this.socket = io.connect(this.host);
+    this.User = UserService;
+
+    this.User.socket = this.socket;
+    this.Rooms = RoomsService;
+
+    this.Rooms.socket = this.socket;
+
     this.init();
   }
 
   init() {
-    let host = 'http://localhost:5000';
-    console.log("socket.io connecting to", host);
-
-    this.socket = io.connect(host);
-
     this.socket.on('connect', () => {
-      let sessionId = this.socket.io.engine.id;
+      this.User.setNick();
+    });
 
-      console.log("socket.io connected with session id", sessionId);
+    this.socket.on('get_rooms', (data) => {
+      this.Rooms.list = data;
+      this.$rootScope.$apply();
+    });
 
-      this.socket.emit('new_user', { id: sessionId });
-    })
+    this.socket.on('new_user', (data) => {
+      console.log(`${data} connected.`);
+    });
+
+    this.socket.on('disconnect', (data) => {
+      console.log(`${data} disconnected.`);
+    });
   }
 }
-
-SocketService.$inject = [];
+SocketService.$inject = ['UserService', 'RoomsService', '$rootScope'];
