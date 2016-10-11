@@ -1,15 +1,14 @@
 export default class RoomsController {
-  constructor(SocketService, RoomsService) {
+  constructor(SocketService) {
     this.rooms = [];
     this.SocketService = SocketService;
-    this.RoomsService = RoomsService;
 
     this.getRooms();
   }
 
   create(room) {
     if (room.length > 3) {
-      this.RoomsService.create(room);
+      this.SocketService.emit('new_room', room);
     } else {
       alert('Le nom de la room doit être supérieure à 3 caractères.')
     }
@@ -23,4 +22,4 @@ export default class RoomsController {
     });
   }
 }
-RoomsController.$inject = ['SocketService', 'RoomsService'];
+RoomsController.$inject = ['SocketService'];

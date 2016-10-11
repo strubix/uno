@@ -1,5 +1,4 @@
-module.exports = function(io, socket) {
-  let rooms = [];
+module.exports = function(io, socket, rooms) {
   socket.on('new_room', (room) => {
     if (rooms.includes(room)) {
       return false;
