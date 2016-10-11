@@ -1,11 +1,12 @@
 module.exports = function(io, socket, rooms) {
 
   socket.on('new_room', (room) => {
-    if (!rooms.includes(room)) {
+    if (rooms.includes(room)) {
+      return false;
+    }
       rooms.push(room);
       socket.join(room);
       io.emit('get_rooms', rooms);
-    }
   });
 
   socket.on('get_rooms', () => {
@@ -13,6 +14,7 @@ module.exports = function(io, socket, rooms) {
   });
 
   socket.on('get_room_users', (room) => {
-    console.log(io.sockets.clients(room));
+    let userList = io.sockets.clients(room);
+    console.log(userList.length);
   });
 };
