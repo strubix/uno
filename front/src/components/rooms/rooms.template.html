@@ -19,10 +19,10 @@
             <th>Players</th>
         </tr>
         </thead>
-        <tbody ng-repeat="room in vm.rooms.list">
+        <tbody ng-repeat="room in vm.rooms">
         <tr>
-            <td>{{room.name}}</td>
-            <td>{{room.users}}/5</td>
+            <td>{{room}}</td>
+            <td>{{vm.getRoomUsers(room)}}0/4</td>
         </tr>
         </tbody>
     </table>

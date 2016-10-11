@@ -1,13 +1,18 @@
-module.exports = function(io, socket) {
-  socket.on('new_user', function(data) {
-    socket.sessionId = data.sessionId;
-    socket.nickname = data.nickname;
-    io.emit('new_user', data.nickname);
-    console.log(`user ${data.nickname} connected.`);
-  });
+module.exports = function(io, socket, user) {
 
-  socket.on('disconnect', function() {
-    io.emit('disconnect', socket.nickname);
-    console.log(`user ${socket.nickname} disconnected.`);
+  socket.on("new_user", function(data) {
+
+    const newName = "Guest " + user.nameCounter++;
+    user.participants.push({ id: data.id, name: newName });
+
+    io.sockets.emit("new_connection", {
+      user: {
+        id: data.id,
+        name: newName
+      },
+      participants: user.participants
+    });
+
+    console.log(`${newName} connected.`);
   });
 };

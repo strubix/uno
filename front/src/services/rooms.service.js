@@ -1,20 +1,27 @@
 export default class RoomsService {
 
-  constructor() {
-    this.socket = '';
-    this.list = [];
+  constructor(SocketService) {
+    this.SocketService = SocketService;
   }
 
   create(room) {
-    this.socket.emit('new_room', { name: room});
+    this.SocketService.emit('new_room', room);
+  }
+
+  join(room) {
+    this.SocketService.emit('join_room', room);
   }
 
   getRooms() {
-    this.socket.emit('get_rooms');
+    this.SocketService.emit('get_rooms');
+  }
+
+  getRoomUsers(room) {
+    this.SocketService.emit('get_room_users', room);
   }
 
   leave(room) {
     //this.socket.leave(room);
   }
 }
-RoomsService.$inject = [];
+RoomsService.$inject = ['SocketService'];
