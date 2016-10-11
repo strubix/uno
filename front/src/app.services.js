@@ -1,11 +1,11 @@
 import angular from 'angular';
-import ExampleService from './services/example.service'
+import AuthService from './services/auth.service'
 import SocketService from './services/socket.service'
 
 const services = 'app.services';
 
 angular.module(services, [])
-    .service('ExampleService', ExampleService)
+    .service('AuthService', AuthService)
     .service('SocketService', SocketService)
 ;
 

@@ -1,9 +1,9 @@
 import io from 'socket.io-client';
-import Auth from './auth';
 
 export default class SocketService {
 
-  constructor($rootScope) {
+  constructor(AuthService, $rootScope) {
+    this.AuthService = AuthService;
     this.$rootScope = $rootScope;
     this.host = 'http://localhost:5000';
 
@@ -21,7 +21,7 @@ export default class SocketService {
       this.socket.on('new_connection', (data) => {
         if (data.user.id === sessionId) {
           this.$rootScope.$apply(() => {
-            Auth.setCurrentUser(data.user);
+            this.AuthService.setCurrentUser(data.user);
           });
         }
         console.log(`${data.user.name} connected.`);
@@ -41,4 +41,4 @@ export default class SocketService {
     this.socket.emit(key, data);
   }
 }
-SocketService.$inject = ['$rootScope'];
+SocketService.$inject = ['AuthService', '$rootScope'];

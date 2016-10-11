@@ -1,22 +1,25 @@
 module.exports = function(io, socket, rooms) {
-  socket.on('new_room', (room) => {
-    if (rooms.includes(room)) {
-      return false;
+  function joinRoom(data, rooms) {
+    if (!rooms[data.room].users[data.user.name]
+        && rooms[data.room].length < 4) {
+      socket.join(data.room);
+      rooms[data.room].users[data.user.name] = data.user;
+      rooms[data.room].length++;
+      io.sockets.emit('get_rooms', rooms);
+      socket.emit('room_joined', data);
     }
-    rooms.push(room);
-    socket.join(room);
-    io.emit('get_rooms', rooms);
+  }
+
+  socket.on('new_room', (data) => {
+    rooms[data.room] = { name: data.room, users: {}, length: 0 };
+    joinRoom(data, rooms);
   });
 
   socket.on('get_rooms', () => {
-    socket.emit('get_rooms', rooms);
+    io.sockets.emit('get_rooms', rooms);
   });
 
-  socket.on('get_room_users', (room) => {
-    socket.emit('room_users', io.sockets.adapter.rooms[room])
-  });
-
-  socket.on('join_room', (room) => {
-    socket.join(room);
+  socket.on('join_room', (data) => {
+    joinRoom(data, rooms);
   });
 };
