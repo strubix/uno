@@ -1,8 +1,8 @@
-import controller from './home.controller';
+import controller from './room.controller';
 import './style.scss';
 
 export default {
-  templateUrl: 'components/home/home.template.html',
+  templateUrl: 'components/room/room.template.html',
   controller: controller,
   controllerAs: 'vm',
   bindings: {},
