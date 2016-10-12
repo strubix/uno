@@ -8,11 +8,24 @@ angular.module(routes, ['ui.router'])
       $stateProvider
           .state("rooms", {
             url: "/rooms",
-            template: "<rooms></rooms>"
+            template: "<rooms></rooms>",
+            resolve: {
+              security: ['$q', 'AuthService', 'SocketService', function($q, AuthService, SocketService){
+                AuthService.setCurrentRoom('');
+                SocketService.emit('leave_room');
+              }]
+            }
           })
           .state("room", {
             url: "/room",
-            template: "<room></room>"
+            template: "<room></room>",
+            resolve: {
+              security: ['$q', 'AuthService', function($q, AuthService){
+                if(AuthService.getCurrentRoom() === ''){
+                  return $q.reject("Not Authorized");
+                }
+              }]
+            }
           });
     }]);
 

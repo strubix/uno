@@ -1,35 +1,17 @@
-export default class RoomsController {
+export default class RoomController {
   constructor(SocketService, AuthService) {
-    this.rooms = [];
     this.SocketService = SocketService;
     this.AuthService = AuthService;
-
-    this.getRooms();
+    this.room = AuthService.getCurrentRoom();
+    this.players = '';
+    this.getUsers(this.room);
   }
 
-  getRooms() {
-    this.SocketService.emit('get_rooms');
-    this.SocketService.on('get_rooms', (data) => {
-      this.rooms = data;
-    });
-  }
-
-  create(room) {
-    if (room.length > 3) {
-      let data = {room: room, user: this.AuthService.getCurrentUser()};
-      this.SocketService.emit('new_room', data);
-    } else {
-      alert('Le nom de la room doit être supérieure à 3 caractères.')
-    }
-  };
-
-  joinRoom(room){
-    let data = {room: room, user: this.AuthService.getCurrentUser()};
-    this.SocketService.emit('join_room', data);
-
-    this.SocketService.on('room_joined', (data) => {
-      console.log(data.user.name,'joined', data.room);
-    });
+  getUsers (room){
+    this.SocketService.emit('get_players', room);
+    this.SocketService.on('recieve_players', (data)=> {
+      this.players = data;
+    })
   }
 }
-RoomsController.$inject = ['SocketService', 'AuthService'];
+RoomController.$inject = ['SocketService', 'AuthService'];

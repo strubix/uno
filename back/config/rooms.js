@@ -31,13 +31,28 @@ module.exports = function(io, socket, rooms) {
     if (socketRooms.length == 2) {
       delete rooms[socketRooms[1]].users[socket.name];
       rooms[socketRooms[1]].length--;
-      if(rooms[socketRooms[1]].length <= 0){
+      if (rooms[socketRooms[1]].length <= 0) {
         delete rooms[socketRooms[1]];
       }
       io.sockets.emit('get_rooms', rooms);
     }
   };
 
-  socket.on('disconnect', () => {
+  socket.on('leave_room', () => {
+    const socketRooms = Object.keys(socket.rooms());
+    if (socketRooms.length == 2) {
+      delete rooms[socketRooms[1]].users[socket.name];
+      socket.leave(socketRooms[1]);
+      rooms[socketRooms[1]].length--;
+      if (rooms[socketRooms[1]].length <= 0) {
+        delete rooms[socketRooms[1]];
+      }
+      io.sockets.emit('recieve_players', rooms[socketRooms[1]].users);
+    }
+    io.sockets.emit('get_rooms', rooms);
   });
+
+  socket.on('get_players', (room)=> {
+    io.sockets.emit('recieve_players', rooms[room].users);
+  })
 };
