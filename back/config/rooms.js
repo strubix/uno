@@ -20,6 +20,24 @@ module.exports = function(io, socket, rooms) {
   });
 
   socket.on('join_room', (data) => {
-    joinRoom(data, rooms);
+    const socketRooms = Object.keys(socket.rooms());
+    if (socketRooms.length < 2) {
+      joinRoom(data, rooms);
+    }
+  });
+
+  socket.onclose = function() {
+    const socketRooms = Object.keys(socket.rooms());
+    if (socketRooms.length == 2) {
+      delete rooms[socketRooms[1]].users[socket.name];
+      rooms[socketRooms[1]].length--;
+      if(rooms[socketRooms[1]].length <= 0){
+        delete rooms[socketRooms[1]];
+      }
+      io.sockets.emit('get_rooms', rooms);
+    }
+  };
+
+  socket.on('disconnect', () => {
   });
 };
