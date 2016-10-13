@@ -4,6 +4,7 @@ module.exports = function(io, socket, rooms) {
         && rooms[data.room].length < 4) {
       socket.join(data.room);
       rooms[data.room].users[data.user.name] = data.user;
+      rooms[data.room].users[data.user.name].ready = false;
       rooms[data.room].length++;
       io.sockets.emit('get_rooms', rooms);
       socket.emit('room_joined', data);
@@ -54,5 +55,17 @@ module.exports = function(io, socket, rooms) {
 
   socket.on('get_players', (room)=> {
     io.sockets.emit('recieve_players', rooms[room].users);
-  })
+  });
+
+  socket.on('update_player', (data)=>{
+    console.log(data);
+    console.log(rooms[data.room].users[data.player].ready);
+    if(rooms[data.room].users[data.player].ready){
+      rooms[data.room].users[data.player].ready = false;
+      console.log('toto');
+    } else {
+      rooms[data.room].users[data.player].ready = true;
+    }
+    io.sockets.emit('recieve_players', rooms[data.room].users);
+  });
 };

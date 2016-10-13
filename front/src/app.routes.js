@@ -10,7 +10,7 @@ angular.module(routes, ['ui.router'])
             url: "/rooms",
             template: "<rooms></rooms>",
             resolve: {
-              security: ['$q', 'AuthService', 'SocketService', function($q, AuthService, SocketService){
+              security: ['AuthService', 'SocketService', function( AuthService, SocketService){
                 AuthService.setCurrentRoom('');
                 SocketService.emit('leave_room');
               }]

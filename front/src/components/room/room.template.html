@@ -4,12 +4,26 @@
         <thead>
         <tr>
             <th>Player</th>
+            <th class="text-right">Ready</th>
         </tr>
         </thead>
         <tbody ng-repeat="player in vm.players">
         <tr>
             <td>{{player.name}}</td>
+            <td ng-if="!player.ready">
+                <button class="btn btn-default pull-right" ng-click="vm.toggleReady(player.name)">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </button>
+            </td>
+            <td ng-if="player.ready">
+                <button class="btn btn-success pull-right" ng-click="vm.toggleReady(player.name)">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                </button>
+            </td>
+        </tr>
+        <tr>
         </tr>
         </tbody>
     </table>
+    <button class="btn btn-primary pull-right" ng-show="vm.full" ng-click="vm.launchGame()" type="submit">Lancer la partie</button>
 </section>
