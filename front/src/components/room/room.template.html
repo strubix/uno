@@ -7,9 +7,9 @@
             <th class="text-right">Ready</th>
         </tr>
         </thead>
-        <tbody ng-repeat="player in vm.players">
-        <tr>
-            <td>{{player.name}}</td>
+        <tbody>
+        <tr ng-repeat="player in vm.players">
+            <td ng-class="{highlight: vm.player.name==player.name}">{{player.name}}</td>
             <td ng-if="!player.ready">
                 <button class="btn btn-default pull-right" ng-click="vm.toggleReady(player.name)">
                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>

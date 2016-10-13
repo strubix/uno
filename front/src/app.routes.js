@@ -13,6 +13,7 @@ angular.module(routes, ['ui.router'])
               security: ['AuthService', 'SocketService', function( AuthService, SocketService){
                 AuthService.setCurrentRoom('');
                 SocketService.emit('leave_room');
+                SocketService.emit('get_rooms');
               }]
             }
           })
