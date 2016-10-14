@@ -26,7 +26,7 @@ export default class RoomController {
       this.full = false;
     });
     this.SocketService.on('game_launched', ()=> {
-      this.AuthService.setCurrentGame = this.room;
+      this.AuthService.setCurrentGame(this.room);
       this.$state.go('game');
     });
     this.player = this.AuthService.getCurrentUser();

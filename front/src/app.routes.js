@@ -10,7 +10,7 @@ angular.module(routes, ['ui.router'])
             url: "/rooms",
             template: "<rooms></rooms>",
             resolve: {
-              security: ['AuthService', 'SocketService', function( AuthService, SocketService){
+              security: ['AuthService', 'SocketService', function(AuthService, SocketService){
                 AuthService.setCurrentRoom('');
                 SocketService.emit('leave_room');
                 SocketService.emit('get_rooms');
@@ -21,8 +21,9 @@ angular.module(routes, ['ui.router'])
             url: "/room",
             template: "<room></room>",
             resolve: {
-              security: ['$q', 'AuthService', function($q, AuthService){
+              security: ['$q', 'AuthService', '$state', function($q, AuthService, $state){
                 if(AuthService.getCurrentRoom() === ''){
+                  $state.go('rooms');
                   return $q.reject("Not Authorized");
                 }
               }]
@@ -31,13 +32,16 @@ angular.module(routes, ['ui.router'])
           .state("game", {
             url: "/game",
             template: "<game></game>",
+            /* TODO: Uncomment when /game design finished
             resolve: {
-              security: ['$q', 'AuthService', function($q, AuthService){
+              security: ['$q', 'AuthService', '$state', function($q, AuthService, $state){
                 if(AuthService.getCurrentGame() === ''){
+                  $state.go('rooms');
                   return $q.reject("Not Authorized");
                 }
               }]
             }
+            */
           });
     }]);
 
