@@ -58,11 +58,8 @@ module.exports = function(io, socket, rooms) {
   });
 
   socket.on('update_player', (data)=>{
-    console.log(data);
-    console.log(rooms[data.room].users[data.player].ready);
     if(rooms[data.room].users[data.player].ready){
       rooms[data.room].users[data.player].ready = false;
-      console.log('toto');
     } else {
       rooms[data.room].users[data.player].ready = true;
     }

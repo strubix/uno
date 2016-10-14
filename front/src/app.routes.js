@@ -27,6 +27,17 @@ angular.module(routes, ['ui.router'])
                 }
               }]
             }
+          })
+          .state("game", {
+            url: "/game",
+            template: "<game></game>",
+            resolve: {
+              security: ['$q', 'AuthService', function($q, AuthService){
+                if(AuthService.getCurrentGame() === ''){
+                  return $q.reject("Not Authorized");
+                }
+              }]
+            }
           });
     }]);
 

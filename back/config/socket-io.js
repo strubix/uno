@@ -9,5 +9,7 @@ module.exports = function(app, server) {
     require('./rooms')(io, socket, rooms);
     // users
     require('./users')(io, socket, user);
+    // game
+    require('./game')(io, socket);
   });
 };

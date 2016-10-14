@@ -3,6 +3,7 @@ export default class AuthService {
   constructor() {
     this.currentUser = '';
     this.currentRoom = '';
+    this.currentGame = '';
   }
 
   setCurrentUser(user) {
@@ -19,6 +20,14 @@ export default class AuthService {
 
   getCurrentRoom(){
     return this.currentRoom;
+  }
+
+  setCurrentGame(game) {
+    this.currentGame = game;
+  }
+
+  getCurrentGame(){
+    return this.currentGame;
   }
 }
 AuthService.$inject = [];

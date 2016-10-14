@@ -25,20 +25,21 @@ export default class RoomController {
       }
       this.full = false;
     });
+    this.SocketService.on('game_launched', ()=> {
+      this.AuthService.setCurrentGame = this.room;
+      this.$state.go('game');
+    });
     this.player = this.AuthService.getCurrentUser();
   }
 
   toggleReady(player) {
     if (player === this.AuthService.getCurrentUser().name) {
-      const data = {};
-      data.player = player;
-      data.room = this.room;
-      this.SocketService.emit('update_player', data);
+      this.SocketService.emit('update_player', { player: player, room: this.room });
     }
   }
 
   launchGame() {
-    this.$state.go('game');
+    this.SocketService.emit('launch_game', this.room);
   }
 }
 RoomController.$inject = ['SocketService', 'AuthService', '$state'];
