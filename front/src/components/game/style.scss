@@ -1,4 +1,20 @@
 .game {
   background-color: black;
   height: 500px;
+  position: relative;
+  & .current-deck {
+    position: absolute;
+  }
+  & .top-deck {
+    position: absolute;
+    top: 0;
+  }
+  & .left-deck {
+    position: absolute;
+    left: 0;
+  }
+  & .right-deck {
+    position: absolute;
+    right: 0;
+  }
 }
