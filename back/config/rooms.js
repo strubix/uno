@@ -6,21 +6,21 @@ module.exports = function(io, socket, rooms) {
       rooms[data.room].users[data.user.name] = data.user;
       rooms[data.room].users[data.user.name].ready = false;
       rooms[data.room].length++;
-      io.sockets.emit('get_rooms', rooms);
+      io.sockets.emit('updateRooms', rooms);
       socket.emit('room_joined', data);
     }
   }
 
-  socket.on('new_room', (data) => {
+  socket.on('createRoom', (data) => {
     rooms[data.room] = { name: data.room, users: {}, length: 0 };
     joinRoom(data, rooms);
   });
 
-  socket.on('get_rooms', () => {
-    io.sockets.emit('get_rooms', rooms);
+  socket.on('updateRooms', () => {
+    io.sockets.emit('updateRooms', rooms);
   });
 
-  socket.on('join_room', (data) => {
+  socket.on('joinRoom', (data) => {
     const socketRooms = Object.keys(socket.rooms());
     if (socketRooms.length < 2) {
       joinRoom(data, rooms);
@@ -50,7 +50,7 @@ module.exports = function(io, socket, rooms) {
       }
       io.sockets.emit('recieve_players', rooms[socketRooms[1]].users);
     }
-    io.sockets.emit('get_rooms', rooms);
+    io.sockets.emit('updateRooms', rooms);
   });
 
   socket.on('get_players', (room)=> {

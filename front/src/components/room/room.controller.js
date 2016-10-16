@@ -39,7 +39,7 @@ export default class RoomController {
   }
 
   launchGame() {
-    this.SocketService.emit('launch_game', this.room);
+    this.SocketService.emit('launchGame', this.room);
   }
 }
 RoomController.$inject = ['SocketService', 'AuthService', '$state'];

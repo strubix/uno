@@ -9,8 +9,8 @@ export default class RoomsController {
   }
 
   getRooms() {
-    this.SocketService.emit('get_rooms');
-    this.SocketService.on('get_rooms', (data) => {
+    this.SocketService.emit('updateRooms');
+    this.SocketService.on('updateRooms', (data) => {
       this.rooms = data;
     });
   }
@@ -18,7 +18,7 @@ export default class RoomsController {
   create(room) {
     if (room.length > 3) {
       let data = {room: room, user: this.AuthService.getCurrentUser()};
-      this.SocketService.emit('new_room', data);
+      this.SocketService.emit('createRoom', data);
       this.AuthService.setCurrentRoom(room);
       this.$state.go('room');
     } else {
@@ -28,7 +28,7 @@ export default class RoomsController {
 
   joinRoom(room){
     let data = {room: room, user: this.AuthService.getCurrentUser()};
-    this.SocketService.emit('join_room', data);
+    this.SocketService.emit('joinRoom', data);
 
     this.SocketService.on('room_joined', (data) => {
       console.log(data.user.name,'joined', data.room);
