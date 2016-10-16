@@ -1,26 +1,36 @@
 module.exports = Game;
 class Game {
-  constructor(_idRoom, Deck, Player) {
+  constructor(_idRoom, Deck, players) {
     this.idRoom = _idRoom;
     this.deck = Deck;
-    this.player = Player;
+    this.players = players;
+    this.turn = 0;
   }
 
   addPlayer(Player) {
+    this.players.push(Player);
   }
 
   removePlayer(Player) {
-    return boolean;
+    const index = this.players.indexOf(Player);
+    if (!index) {
+      return false;
+    }
+    this.players.splice(index, 1);
+    return true;
   }
 
   addCard(Card) {
   }
 
   countPlayers() {
-    return int;
+    return this.players.length;
   }
 
   nextTurn() {
-    return Player;
+    if (this.turn > this.countPlayers()) {
+      this.turn = 0;
+    }
+    return this.players[this.turn++];
   }
 }
