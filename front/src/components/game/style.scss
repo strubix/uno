@@ -2,19 +2,29 @@
   background-color: black;
   height: 500px;
   position: relative;
-  & .current-deck {
+
+  & .deck {
+    height: 40px;
+    width: 40px;
+    background-color: blue;
     position: absolute;
+
+    &.current-deck {
+      bottom: 0;
+      left: 50%;
+    }
+    &.top-deck {
+      top: 0;
+      left: 50%;
+    }
+    &.left-deck {
+      top: 50%;
+      left: 0;
+    }
+    &.right-deck {
+      top: 50%;
+      right: 0;
+    }
   }
-  & .top-deck {
-    position: absolute;
-    top: 0;
-  }
-  & .left-deck {
-    position: absolute;
-    left: 0;
-  }
-  & .right-deck {
-    position: absolute;
-    right: 0;
-  }
+
 }
